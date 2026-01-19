@@ -55,3 +55,19 @@ SELECT
 FROM ranked
 WHERE rn = 1
 ORDER BY region;
+
+-- Q3
+-- We need to identify potential gaps in our supply chain for Asia. 
+-- List all suppliers by name who have not delivered any components to the 'Asia' manufacturing region in December 2024.
+
+-- My approach is to first find all suppliers who have made deliveries to Asia in December 2024.
+-- Then, RETURN the names of suppliers who are not in that list. 
+
+SELECT s.supplier_name
+FROM suppliers s
+LEFT JOIN supplier_deliveries d 
+  ON s.supplier_id = d.supplier_id 
+  AND d.manufacturing_region = 'Asia'
+  AND d.delivery_date >= '2024-12-01'
+  AND d.delivery_date < '2025-01-01'
+WHERE d.supplier_id IS NULL;
