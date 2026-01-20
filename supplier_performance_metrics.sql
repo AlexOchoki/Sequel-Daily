@@ -71,3 +71,5 @@ LEFT JOIN supplier_deliveries d
   AND d.delivery_date >= '2024-12-01'
   AND d.delivery_date < '2025-01-01'
 WHERE d.supplier_id IS NULL;
+
+---should do this with an alternative method..remember to do it first thing tomorrow
