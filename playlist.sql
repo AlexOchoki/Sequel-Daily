@@ -8,6 +8,6 @@
 SELECT
     COUNT(DISTINCT user_id) AS unique_users_with_recommended_tracks
 FROM tracks_added
-WHERE is_recommended = 1
+WHERE is_recommended = TRUE
   AND added_date >= '2024-10-01'
   AND added_date <  '2024-11-01';
