@@ -11,3 +11,12 @@ FROM tracks_added
 WHERE is_recommended = TRUE
   AND added_date >= '2024-10-01'
   AND added_date <  '2024-11-01';
+
+
+---Can you give us the name(s) of users who added a non-recommended track to their playlist on October 2nd, 2024?
+SELECT DISTINCT u.user_name
+FROM tracks_added t
+JOIN users u
+  ON u.user_id = t.user_id
+WHERE t.is_recommended = FALSE
+  AND t.added_date = '2024-10-02';
