@@ -13,6 +13,22 @@ WHERE is_recommended = TRUE
   AND added_date <  '2024-11-01';
 
 
+-- Q2
+-- Among the users who added recommended tracks in October 2024, 
+-- what is the average number of recommended tracks added to their playlists? 
+-- Please round this to 1 decimal place for better readability.
+
+SELECT ROUND(AVG(recommended_count), 1) AS avg_recommended_added
+FROM (
+    SELECT user_id, COUNT(*) AS recommended_count
+    FROM tracks_added
+    WHERE added_date >= '2024-10-01'
+      AND added_date < '2024-11-01'
+      AND is_recommended = TRUE
+    GROUP BY user_id
+) subquery;
+
+--Q3
 ---Can you give us the name(s) of users who added a non-recommended track to their playlist on October 2nd, 2024?
 SELECT DISTINCT u.user_name
 FROM tracks_added t
