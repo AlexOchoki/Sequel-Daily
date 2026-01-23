@@ -7,9 +7,6 @@ to keep my SQL skills **warm, fast, and precise** through daily repetition befor
 
 Think of it like brushing your teeth — short, consistent, non-negotiable.
 
----
-
-## 🏋️ What This Repo Is
 - A **daily SQL workout**
 - Short, focused queries
 - Realistic, business-style problems
