@@ -25,3 +25,18 @@ WHERE pe.engagement_date >= '2024-10-01' AND pe.engagement_date < '2024-11-01'
 GROUP BY p.playlist_name, p.number_of_tracks
 ORDER BY avg_duration
 LIMIT 1
+
+-- Q3
+-- To optimize our recommendations, we need the average monthly listening time per listener for each playlist in October 2024. 
+-- For readability, please round down the average listening time to the nearest whole number.
+
+SELECT
+    p.playlist_name,
+    FLOOR(SUM(pe.listening_time_minutes) * 1.0 / COUNT(DISTINCT pe.user_id)) AS avg_monthly_listening_time_per_listener
+FROM playlists p
+JOIN playlist_engagement pe
+  ON pe.playlist_id = p.playlist_id
+WHERE pe.engagement_date >= '2024-10-01'
+  AND pe.engagement_date <  '2024-11-01'
+GROUP BY p.playlist_id, p.playlist_name
+ORDER BY avg_monthly_listening_time_per_listener DESC;
