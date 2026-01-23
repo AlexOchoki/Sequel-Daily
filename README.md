@@ -12,5 +12,3 @@ Think of it like brushing your teeth — short, consistent, non-negotiable.
 - Realistic, business-style problems
 
 Each `.sql` file represents a problem or mini-analysis aimed at keeping fundamentals and problem-solving instincts sharp. It is based on problems I find on practice sites
-
----
