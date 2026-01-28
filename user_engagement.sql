@@ -32,3 +32,23 @@ WITH may_post_reco AS (
 )
 SELECT AVG(streams_cnt) AS avg_streams_per_recommended_artist
 FROM may_post_reco;
+
+
+-- Question 3 of 3
+-- Across users who listened to at least one recommended artist, what is the average number of distinct recommended artists they listened to? 
+-- As in the previous question, only include streams that occurred on or after the date the artist was recommended to the user.
+
+
+WITH user_reco_artists AS (
+  SELECT
+    us.user_id,
+    COUNT(DISTINCT us.artist_id) AS distinct_reco_artists
+  FROM user_streams us
+  JOIN artist_recommendations ar
+    ON us.user_id  = ar.user_id
+   AND us.artist_id = ar.artist_id
+  WHERE us.stream_date >= ar.recommendation_date
+  GROUP BY us.user_id
+)
+SELECT AVG(distinct_reco_artists) AS avg_distinct_recommended_artists_per_user
+FROM user_reco_artists;
