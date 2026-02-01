@@ -41,3 +41,38 @@ SELECT   device_id,
 FROM fct_device_usage
 WHERE usage_date >= '2024-07-01' AND usage_date <= '2024-09-30'
 GROUP BY device_id
+
+
+
+
+-- Q3:
+-- The team is considering bundling the Prime Video and
+-- Amazon Music subscription. They want to understand what
+-- percentage of total usage time comes from Prime Video and
+-- Amazon Music services respectively. Please use data from July 1,2024 to September 30, 2024.
+
+WITH totals AS (
+    SELECT
+        SUM(usage_duration_minutes) AS total_usage
+    FROM fct_device_usage
+    WHERE usage_date BETWEEN '2024-07-01' AND '2024-09-30'
+),
+service_usage AS (
+    SELECT
+        du.service_id,
+        SUM(du.usage_duration_minutes) AS service_usage
+    FROM fct_device_usage du
+    WHERE du.usage_date BETWEEN '2024-07-01' AND '2024-09-30'
+      AND du.service_id IN (1, 2)   -- 1=Prime Video, 2=Amazon Music (per your mapping)
+    GROUP BY du.service_id
+)
+SELECT
+    s.service_name,
+    su.service_usage,
+    (su.service_usage * 100.0 / t.total_usage) AS pct_of_total_usage
+FROM service_usage su
+JOIN totals t
+  ON 1 = 1
+JOIN dim_service s
+  ON s.service_id = su.service_id
+ORDER BY pct_of_total_usage DESC;
