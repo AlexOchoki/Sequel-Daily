@@ -35,3 +35,30 @@ ON o.product_id = p.product_id
 WHERE reorder_flag = '1'
 AND o.order_date BETWEEN '2024-10-01' AND '2024-12-31'
 GROUP BY c.customer_name, p.product_code;
+
+
+-- Q3
+-- When calculating the average reorder frequency, 
+-- it's important to handle cases where reorder counts may be missing or zero. 
+-- Can you compute the average reorder frequency across the product categories, 
+-- ensuring that any missing or null values are appropriately managed for Q4 2024?
+
+
+WITH product_reorders AS (
+    SELECT
+        p.category,
+        p.product_id,
+        COALESCE(SUM(CASE WHEN o.reorder_flag = '1' THEN 1 ELSE 0 END), 0) AS reorder_count
+    FROM dim_products p
+    LEFT JOIN fct_orders o
+        ON p.product_id = o.product_id
+       AND o.order_date BETWEEN '2024-10-01' AND '2024-12-31'
+    GROUP BY p.category, p.product_id
+)
+
+SELECT
+    category,
+    AVG(reorder_count) AS average_reorder_frequency
+FROM product_reorders
+GROUP BY category
+ORDER BY average_reorder_frequency DESC;
