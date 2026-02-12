@@ -7,3 +7,18 @@
 SELECT AVG(booking_cost) AS avg_cost
 FROM fct_corporate_bookings
 WHERE booking_date >= '2024-01-01' AND booking_date < '2024-02-01'
+
+
+-- Q2
+-- Identify the top 5 companies with the highest average booking cost per employee for trips taken during the first quarter of 2024. 
+-- Note that if an employee takes multiple trips, each booking will show up as a separate row in fct_corporate_bookings.
+
+SELECT c.company_name,
+       AVG(b.booking_cost) AS avg_booking_cost
+FROM fct_corporate_bookings b
+JOIN dim_companies c 
+ON c.company_id = b.company_id
+WHERE b.travel_date BETWEEN '2024-01-01' AND '2024-03-31'
+GROUP BY c.company_name
+ORDER BY AVG(b.booking_cost) DESC
+LIMIT 5;
