@@ -22,3 +22,8 @@ WHERE b.travel_date BETWEEN '2024-01-01' AND '2024-03-31'
 GROUP BY c.company_name
 ORDER BY AVG(b.booking_cost) DESC
 LIMIT 5;
+
+-- Q3
+-- For bookings made in February 2024, 
+-- what percentage of bookings were made more than 30 days in advance? 
+-- Use this to recommend strategies for reducing booking costs.
