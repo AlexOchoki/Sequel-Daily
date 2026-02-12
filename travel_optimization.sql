@@ -27,3 +27,14 @@ LIMIT 5;
 -- For bookings made in February 2024, 
 -- what percentage of bookings were made more than 30 days in advance? 
 -- Use this to recommend strategies for reducing booking costs.
+
+SELECT
+    100.0 * 
+    SUM(CASE 
+            WHEN travel_date - booking_date > 30 THEN 1 
+            ELSE 0 
+        END)
+    / NULLIF(COUNT(*), 0) AS pct_booked_30plus_days
+FROM fct_corporate_bookings
+WHERE booking_date >= '2024-02-01'
+  AND booking_date <  '2024-03-01';
