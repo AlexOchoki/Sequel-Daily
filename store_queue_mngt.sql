@@ -52,3 +52,15 @@ WHERE c.checkout_end_time >= '2024-07-01'
   AND c.checkout_end_time <  '2024-08-01'
 GROUP BY s.store_name, hour_
 ORDER BY s.store_name, hour_;
+
+
+-- Q3:
+-- Across all stores in July 2024, which hours exhibit the longest average checkout wait times in minutes? 
+-- This analysis will guide recommendations for optimal staffing strategies.
+
+SELECT EXTRACT(HOUR FROM checkout_end_time) AS hour_ ,
+       AVG(date_part('epoch', checkout_end_time - checkout_start_time)) / 60.0  AS avg_wait_time
+FROM fct_checkout_times
+WHERE checkout_end_time >= '2024-07-01' AND checkout_end_time < '2024-08-01'
+group BY hour_
+order by avg_wait_time DESC
