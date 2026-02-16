@@ -29,3 +29,40 @@ FROM fct_bookings
 WHERE booking_date >= '2024-07-01'
   AND booking_date <  '2024-08-01'
   AND booked_nights >= 1;
+
+
+
+--Q3
+--Based on the top 50% of listings by earnings in July 2024, 
+--what percentage of these listings have ‘ocean view’ as an amenity? For this analysis, look at bookings that were made in July 2024.
+
+WITH july_earnings AS (
+    SELECT 
+        listing_id,
+        SUM(nightly_price * booked_nights) AS total_earnings
+    FROM fct_bookings
+    WHERE booking_date >= '2024-07-01'
+      AND booking_date <  '2024-08-01'
+    GROUP BY listing_id
+),
+
+ranked_listings AS (
+    SELECT 
+        listing_id,
+        total_earnings,
+        NTILE(2) OVER (ORDER BY total_earnings DESC) AS earnings_half
+    FROM july_earnings
+),
+
+top_50_percent AS (
+    SELECT listing_id
+    FROM ranked_listings
+    WHERE earnings_half = 1
+)
+
+SELECT 
+    100.0 * COUNT(*) FILTER (WHERE l.amenities ILIKE '%ocean view%')
+    / COUNT(*) AS pct_ocean_view
+FROM top_50_percent t
+JOIN dim_listings l
+  ON t.listing_id = l.listing_id;
